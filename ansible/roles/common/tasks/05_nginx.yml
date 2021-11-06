@@ -1,0 +1,20 @@
+##
+# Configure nginx web server
+##
+- name: Set up nginx config
+  dnf: name=nginx state=latest
+  become: yes
+
+# Checking if there default.conf
+- name: "Find out if Nginx default conf is initialized"
+  ansible.builtin.stat:
+    path: "/etc/nginx/conf.d/default.conf"
+  register: default_nnginx_conf
+
+- name: Write nginx conf file
+  # Rewrite default nginx configuration
+  template: src=django_bootstrap.conf dest=/etc/nginx/nginx.conf
+  become: yes
+  notify:
+    - restart nginx
+  when: not default_nnginx_conf.stat.exists

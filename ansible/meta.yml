@@ -1,0 +1,9 @@
+galaxy_info:
+  author: Pavel Lankmiler
+  description: Onyx demo
+  company: Pavel Lankmiler
+  license: BSD
+
+  min_ansible_container_version: 1.0.0
+
+  tags: []

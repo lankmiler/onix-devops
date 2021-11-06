@@ -1,0 +1,30 @@
+# App Name
+app_name: mysite
+
+# Deployer User and Groups
+deployer_user: vagrant
+deployer_group: vagrant
+
+# App Directory
+app_dir: /{{ deployer_user }}/{{app_name}}
+
+# DB Configuration
+db_url: postgresql://{{deployer_user}}:{{db_password}}@localhost/{{app_name}}
+db_password: thisissomeseucrepassword
+db_name: "{{ app_name }}"
+db_user: "{{ deployer_user }}"
+
+# Application Dependencies Setup
+venv_dir: '/home/{{ deployer_user }}/envs/{{ app_name }}'
+venv_python: '{{ venv_dir }}/bin/python'
+
+# Remote Server Details
+server_ip: 192.168.234.131
+wsgi_server_port: 5035
+
+
+# WSGI Vars
+django_wsgi_module: config.wsgi
+django_settings_module: config.settings.production
+django_secret_key: 'changeme'
+database_url: '{{ db_url }}'

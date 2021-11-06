@@ -1,0 +1,1 @@
+/home/vagrant/envs/mysite/bin/gunicorn --workers=2 mysite.wsgi --bind 127.0.0.1:5035

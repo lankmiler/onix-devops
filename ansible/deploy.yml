@@ -1,0 +1,5 @@
+- name: apply common configuration to server
+  hosts: all
+  user: vagrant
+  roles:
+    - common

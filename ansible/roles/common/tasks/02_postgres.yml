@@ -1,0 +1,46 @@
+##
+# Set up and configure postgres
+##
+- name: Install and configure db
+  dnf: name={{item}} state=latest
+  become: yes
+  with_items:
+    - postgresql-server
+    - postgresql-contrib
+    - postgresql-devel
+    - python3-psycopg2
+
+
+# Checking initialized
+- name: "Find out if PostgreSQL is initialized"
+      ansible.builtin.stat:
+        path: "/var/lib/pgsql/data/pg_hba.conf"
+      register: postgres_data
+
+- name: Run initdb command
+  raw: postgresql-setup initdb
+  become: yes
+  when: not postgres_data.stat.exists
+
+- name: Start and enable postgres
+  service: name=postgresql enabled=yes state=started
+  become: yes
+  when: not postgres_data.stat.exists
+
+- name: Create database
+  postgresql_db: name={{ app_name }}
+  become_user: postgres
+  become: yes
+  when: not postgres_data.stat.exists
+
+- name: Configure a new postgresql user
+  postgresql_user: db={{ app_name }}
+                                name={{ db_user }}
+                                password={{ db_password }}
+                                priv=ALL
+                                role_attr_flags=NOSUPERUSER
+  when: not postgres_data.stat.exists
+  become: yes
+  become_user: postgres
+  notify:
+    - restart postgres

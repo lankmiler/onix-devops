@@ -1,0 +1,6 @@
+##
+# Set up Gunicorn and configure systemd to execute gunicorn_start script
+##
+- name: Make the gunicorn_start script executable
+  raw: cd {{ deploy_dir }}; chmod +x gunicorn_start
+  become: yes
